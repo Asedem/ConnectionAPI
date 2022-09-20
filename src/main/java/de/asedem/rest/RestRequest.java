@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 
 public class RestRequest {
 
@@ -31,12 +32,33 @@ public class RestRequest {
         connection.disconnect();
     }
 
-    public RestRequest get(URL url) throws IOException {
+    public CompletableFuture<RestRequest> get(URL url) {
 
         return this.get(url, 10000, 10000);
     }
 
-    public RestRequest get(URL url, int connectionTimeout, int readTimeout) throws IOException {
+    public CompletableFuture<RestRequest> get(URL url, int connectionTimeout, int readTimeout) {
+
+        CompletableFuture<RestRequest> completableFuture = new CompletableFuture<>();
+
+        new Thread(() -> {
+
+            try {
+                completableFuture.complete(getSync(url, connectionTimeout, readTimeout));
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        });
+
+        return completableFuture;
+    }
+
+    public RestRequest getSync(URL url) throws IOException {
+
+        return this.getSync(url, 10000, 10000);
+    }
+
+    public RestRequest getSync(URL url, int connectionTimeout, int readTimeout) throws IOException {
 
         HttpURLConnection connection;
 
@@ -45,7 +67,6 @@ public class RestRequest {
         StringBuilder responseContent = new StringBuilder();
 
         connection = (HttpURLConnection) url.openConnection();
-
         connection.setRequestMethod(RestRequestMethode.GET.getMethode());
         connection.setConnectTimeout(connectionTimeout);
         connection.setReadTimeout(readTimeout);
@@ -53,11 +74,13 @@ public class RestRequest {
         int responseCode = connection.getResponseCode();
 
         if (responseCode > 299) {
+
             bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
             while ((line = bufferedReader.readLine()) != null) responseContent.append(line);
             bufferedReader.close();
             this.value = null;
             return this;
+
         }
 
         bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
