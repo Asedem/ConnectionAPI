@@ -1,7 +1,5 @@
 package de.asedem.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -13,8 +11,6 @@ import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
 public class RestRequest {
-
-    private JSONObject value;
 
     public void post(URL url, String json) throws IOException {
 
@@ -35,14 +31,14 @@ public class RestRequest {
         connection.disconnect();
     }
 
-    public CompletableFuture<RestRequest> get(URL url) {
+    public CompletableFuture<Response> get(URL url) {
 
         return this.get(url, 10000, 10000);
     }
 
-    public CompletableFuture<RestRequest> get(URL url, int connectionTimeout, int readTimeout) {
+    public CompletableFuture<Response> get(URL url, int connectionTimeout, int readTimeout) {
 
-        CompletableFuture<RestRequest> completableFuture = new CompletableFuture<>();
+        CompletableFuture<Response> completableFuture = new CompletableFuture<>();
 
         new Thread(() -> {
 
@@ -56,12 +52,12 @@ public class RestRequest {
         return completableFuture;
     }
 
-    public RestRequest getSync(URL url) throws IOException {
+    public Response getSync(URL url) throws IOException {
 
         return this.getSync(url, 10000, 10000);
     }
 
-    public RestRequest getSync(URL url, int connectionTimeout, int readTimeout) throws IOException {
+    public Response getSync(URL url, int connectionTimeout, int readTimeout) throws IOException {
 
         HttpURLConnection connection;
 
@@ -81,8 +77,7 @@ public class RestRequest {
             bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
             while ((line = bufferedReader.readLine()) != null) responseContent.append(line);
             bufferedReader.close();
-            this.value = null;
-            return this;
+            return new Response(null);
 
         }
 
@@ -92,23 +87,6 @@ public class RestRequest {
 
         connection.disconnect();
 
-        this.value = new JSONObject(responseContent.toString());
-        return this;
-    }
-
-    public JSONObject asRawValue() {
-        return value;
-    }
-
-    public String asValueString() {
-        return this.value.toString();
-    }
-
-    public <T> JavaObjectHolder<T> asJavaObject(Class<T> targetClass) throws JsonProcessingException {
-
-        return new JavaObjectHolder<>(new ObjectMapper().readValue(this.value.toString(), targetClass));
-    }
-
-    public record JavaObjectHolder<T>(T get) {
+        return new Response(new JSONObject(responseContent.toString()));
     }
 }
