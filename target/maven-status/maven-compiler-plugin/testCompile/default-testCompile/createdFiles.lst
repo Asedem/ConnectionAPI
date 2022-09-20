@@ -1,3 +1,4 @@
+de/asedem/rest/models/Result.class
+de/asedem/rest/models/Support.class
 de/asedem/rest/RestRequestTest.class
-de/asedem/rest/models/Results.class
-de/asedem/rest/models/User.class
+de/asedem/rest/models/Data.class

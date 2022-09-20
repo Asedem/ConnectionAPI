@@ -1,25 +1,48 @@
 package de.asedem.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import de.asedem.rest.models.Results;
-import de.asedem.rest.models.User;
+import de.asedem.rest.models.*;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RestRequestTest {
 
+    private static Result expectedResult;
+    private static String expectedString;
+
+    @BeforeAll
+    static void setup() {
+
+        Data expectedData = new Data(
+                2,
+                "janet.weaver@reqres.in",
+                "Janet",
+                "Weaver",
+                "https://reqres.in/img/faces/2-image.jpg");
+
+        Support expectedSupport = new Support(
+                "https://reqres.in/#support-heading",
+                "To keep ReqRes free, contributions towards server costs are appreciated!");
+
+        expectedResult = new Result(
+                expectedData,
+                expectedSupport);
+
+        expectedString = "{\"data\":{\"last_name\":\"Weaver\",\"id\":2,\"avatar\":\"https://reqres.in/img/faces/2-image.jpg\",\"first_name\":\"Janet\",\"email\":\"janet.weaver@reqres.in\"},\"support\":{\"text\":\"To keep ReqRes free, contributions towards server costs are appreciated!\",\"url\":\"https://reqres.in/#support-heading\"}}";
+    }
+
     @Test
     void testGetRequestGetsFeedbackSync() throws IOException {
 
         JSONObject jsonObject = new RestRequest()
-                .getSync(new URL("https://laby.net/api/search/names/Asedem"))
+                .getSync(new URL("https://reqres.in/api/users/2"))
                 .asRawValue();
 
         assertNotNull(jsonObject);
@@ -28,34 +51,29 @@ class RestRequestTest {
     @Test
     void testGetRequestAsJavaObjectSync() throws IOException {
 
-        Results results = new RestRequest()
-                .getSync(new URL("https://laby.net/api/search/names/Asedem"))
-                .asJavaObject(Results.class)
+        Result result = new RestRequest()
+                .getSync(new URL("https://reqres.in/api/users/2"))
+                .asJavaObject(Result.class)
                 .get();
 
-        Results expected = new Results(Collections
-                .singletonList(new User("Asedem", "121a9207-cd9a-4717-ba06-bb96667492f1")));
-
-        assertEquals(expected, results);
+        assertEquals(expectedResult, result);
     }
 
     @Test
     void testGetRequestAsStringSync() throws IOException {
 
         String string = new RestRequest()
-                .getSync(new URL("https://laby.net/api/search/names/Asedem"))
+                .getSync(new URL("https://reqres.in/api/users/2"))
                 .asValueString();
 
-        String expected = "{\"results\":[{\"user_name\":\"Asedem\",\"uuid\":\"121a9207-cd9a-4717-ba06-bb96667492f1\"}]}";
-
-        assertEquals(expected, string);
+        assertEquals(expectedString, string);
     }
 
     @Test
     void testGetRequestGetsFeedbackAsync() throws IOException {
 
         new RestRequest()
-                .get(new URL("https://laby.net/api/search/names/Asedem"))
+                .get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) ->
                         assertNotNull(restRequest.asRawValue()));
     }
@@ -63,14 +81,11 @@ class RestRequestTest {
     @Test
     void testGetRequestAsJavaObjectAsync() throws IOException {
 
-        Results expected = new Results(Collections
-                .singletonList(new User("Asedem", "121a9207-cd9a-4717-ba06-bb96667492f1")));
-
         new RestRequest()
-                .get(new URL("https://laby.net/api/search/names/Asedem"))
+                .get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) -> {
                     try {
-                        assertEquals(expected, restRequest.asJavaObject(Results.class).get());
+                        assertEquals(expectedResult, restRequest.asJavaObject(Result.class).get());
                     } catch (JsonProcessingException exception) {
                         exception.printStackTrace();
                     }
@@ -80,12 +95,10 @@ class RestRequestTest {
     @Test
     void testGetRequestAsStringAsync() throws IOException {
 
-        String expected = "{\"results\":[{\"user_name\":\"Asedem\",\"uuid\":\"121a9207-cd9a-4717-ba06-bb96667492f1\"}]}";
-
         new RestRequest()
-                .get(new URL("https://laby.net/api/search/names/Asedem"))
+                .get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) -> {
-                    assertEquals(expected, restRequest.asValueString());
+                    assertEquals(expectedString, restRequest.asValueString());
                 });
     }
 }
