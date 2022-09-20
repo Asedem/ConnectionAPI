@@ -4,4 +4,5 @@ import java.util.List;
 
 public record Results(
         List<User> results
-) { }
+) {
+}
