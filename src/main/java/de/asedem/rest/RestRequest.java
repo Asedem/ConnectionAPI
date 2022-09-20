@@ -12,6 +12,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class RestRequest {
 
+    /**
+     * Send a POST request to an url
+     * @param url the url to send to
+     * @param json the json which should be sendet
+     * @throws IOException if something went wrong
+     */
     public void post(URL url, String json) throws IOException {
 
         HttpURLConnection connection;
@@ -31,11 +37,23 @@ public class RestRequest {
         connection.disconnect();
     }
 
+    /**
+     * Send a GET request to an url async
+     * @param url the url to send to
+     * @return a response from the GET request
+     */
     public CompletableFuture<Response> get(URL url) {
 
         return this.get(url, 10000, 10000);
     }
 
+    /**
+     * Send a GET request to an url async
+     * @param url the url to send to
+     * @param connectionTimeout the max connection time
+     * @param readTimeout the max read time
+     * @return a response from the GET request
+     */
     public CompletableFuture<Response> get(URL url, int connectionTimeout, int readTimeout) {
 
         CompletableFuture<Response> completableFuture = new CompletableFuture<>();
@@ -52,11 +70,25 @@ public class RestRequest {
         return completableFuture;
     }
 
+    /**
+     * Send a GET request to an url sync
+     * @param url the url to send to
+     * @return a response from the GET request
+     * @throws IOException if something went wrong
+     */
     public Response getSync(URL url) throws IOException {
 
         return this.getSync(url, 10000, 10000);
     }
 
+    /**
+     * Send a GET request to an url sync
+     * @param url the url to send to
+     * @param connectionTimeout the max connection time
+     * @param readTimeout the max read time
+     * @return a response from the GET request
+     * @throws IOException if something went wrong
+     */
     public Response getSync(URL url, int connectionTimeout, int readTimeout) throws IOException {
 
         HttpURLConnection connection;

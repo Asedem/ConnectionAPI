@@ -12,6 +12,10 @@ public enum RestRequestMethode {
         this.methode = methode;
     }
 
+    /**
+     * Get the string from the request methode
+     * @return the string from the request methode
+     */
     public String getMethode() {
         return methode;
     }
