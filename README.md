@@ -48,7 +48,7 @@ public record Data(
 Getting the JSON as the Data object sync
 
 ```java
-final Data data = RestRequest.getSync(new URL("https://reqres.in/api/users/2"))
+final Data data = RestRequest.getSync(new URL("<Your URL>"))
         .asJavaObject(Data.class)
         .get();
 ...
@@ -57,7 +57,7 @@ final Data data = RestRequest.getSync(new URL("https://reqres.in/api/users/2"))
 Getting the JSON as the Data object async
 
 ```java
-RestRequest.get(new URL("https://reqres.in/api/users/2"))
+RestRequest.get(new URL("<Your URL>"))
         .whenComplete((restRequest, throwable) -> {
             try {
                 final Data data = restRequest.asJavaObject(Data.class).get();
