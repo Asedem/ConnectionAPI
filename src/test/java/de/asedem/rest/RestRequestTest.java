@@ -43,8 +43,7 @@ class RestRequestTest {
     @Test
     void testGetRequestGetsFeedbackSync() throws IOException {
 
-        final JSONObject jsonObject = new RestRequest()
-                .getSync(new URL("https://reqres.in/api/users/2"))
+        final JSONObject jsonObject = RestRequest.getSync(new URL("https://reqres.in/api/users/2"))
                 .asRawValue();
 
         assertNotNull(jsonObject);
@@ -53,8 +52,7 @@ class RestRequestTest {
     @Test
     void testGetRequestAsJavaObjectSync() throws IOException {
 
-        final Result result = new RestRequest()
-                .getSync(new URL("https://reqres.in/api/users/2"))
+        final Result result = RestRequest.getSync(new URL("https://reqres.in/api/users/2"))
                 .asJavaObject(Result.class)
                 .get();
 
@@ -64,8 +62,7 @@ class RestRequestTest {
     @Test
     void testGetRequestAsStringSync() throws IOException {
 
-        final String string = new RestRequest()
-                .getSync(new URL("https://reqres.in/api/users/2"))
+        final String string = RestRequest.getSync(new URL("https://reqres.in/api/users/2"))
                 .asValueString();
 
         assertEquals(expectedString, string);
@@ -74,8 +71,7 @@ class RestRequestTest {
     @Test
     void testGetRequestGetsFeedbackAsync() throws IOException {
 
-        new RestRequest()
-                .get(new URL("https://reqres.in/api/users/2"))
+        RestRequest.get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) ->
                         assertNotNull(restRequest.asRawValue()));
     }
@@ -83,8 +79,7 @@ class RestRequestTest {
     @Test
     void testGetRequestAsJavaObjectAsync() throws IOException {
 
-        new RestRequest()
-                .get(new URL("https://reqres.in/api/users/2"))
+        RestRequest.get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) -> {
                     try {
                         assertEquals(expectedResult, restRequest.asJavaObject(Result.class).get());
@@ -97,8 +92,7 @@ class RestRequestTest {
     @Test
     void testGetRequestAsStringAsync() throws IOException {
 
-        new RestRequest()
-                .get(new URL("https://reqres.in/api/users/2"))
+        RestRequest.get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) -> {
                     assertEquals(expectedString, restRequest.asValueString());
                 });

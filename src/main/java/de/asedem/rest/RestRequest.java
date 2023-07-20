@@ -13,6 +13,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class RestRequest {
 
+    private RestRequest() {
+    }
+
     /**
      * Send a POST request to an url
      *
@@ -20,7 +23,7 @@ public class RestRequest {
      * @param json the json which should be sendet
      * @throws IOException if something went wrong
      */
-    public void post(@NotNull final URL url, @NotNull final String json) throws IOException {
+    public static void post(@NotNull final URL url, @NotNull final String json) throws IOException {
 
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.addRequestProperty("Content-Type", "application/json");
@@ -43,9 +46,9 @@ public class RestRequest {
      * @param url the url to send to
      * @return a response from the GET request
      */
-    public CompletableFuture<Response> get(@NotNull final URL url) {
+    public static CompletableFuture<Response> get(@NotNull final URL url) {
 
-        return this.get(url, 10000, 10000);
+        return RestRequest.get(url, 10000, 10000);
     }
 
     /**
@@ -56,7 +59,7 @@ public class RestRequest {
      * @param readTimeout       the max read time
      * @return a response from the GET request
      */
-    public CompletableFuture<Response> get(@NotNull final URL url, final int connectionTimeout, final int readTimeout) {
+    public static CompletableFuture<Response> get(@NotNull final URL url, final int connectionTimeout, final int readTimeout) {
 
         final CompletableFuture<Response> completableFuture = new CompletableFuture<>();
 
@@ -79,9 +82,9 @@ public class RestRequest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public Response getSync(@NotNull final URL url) throws IOException {
+    public static Response getSync(@NotNull final URL url) throws IOException {
 
-        return this.getSync(url, 10000, 10000);
+        return RestRequest.getSync(url, 10000, 10000);
     }
 
     /**
@@ -93,7 +96,7 @@ public class RestRequest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public Response getSync(@NotNull final URL url, final int connectionTimeout, final int readTimeout) throws IOException {
+    public static Response getSync(@NotNull final URL url, final int connectionTimeout, final int readTimeout) throws IOException {
 
 
         BufferedReader bufferedReader;
