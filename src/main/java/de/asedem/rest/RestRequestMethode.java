@@ -1,5 +1,7 @@
 package de.asedem.rest;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum RestRequestMethode {
 
     GET("GET"),
@@ -8,7 +10,7 @@ public enum RestRequestMethode {
 
     private final String methode;
 
-    RestRequestMethode(String methode) {
+    RestRequestMethode(@NotNull final String methode) {
         this.methode = methode;
     }
 
@@ -16,6 +18,7 @@ public enum RestRequestMethode {
      * Get the string from the request methode
      * @return the string from the request methode
      */
+    @NotNull
     public String getMethode() {
         return methode;
     }

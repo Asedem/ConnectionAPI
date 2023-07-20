@@ -20,14 +20,14 @@ class RestRequestTest {
     @BeforeAll
     static void setup() {
 
-        Data expectedData = new Data(
+        final Data expectedData = new Data(
                 2,
                 "janet.weaver@reqres.in",
                 "Janet",
                 "Weaver",
                 "https://reqres.in/img/faces/2-image.jpg");
 
-        Support expectedSupport = new Support(
+        final Support expectedSupport = new Support(
                 "https://reqres.in/#support-heading",
                 "To keep ReqRes free, contributions towards server costs are appreciated!");
 
@@ -41,7 +41,7 @@ class RestRequestTest {
     @Test
     void testGetRequestGetsFeedbackSync() throws IOException {
 
-        JSONObject jsonObject = new RestRequest()
+        final JSONObject jsonObject = new RestRequest()
                 .getSync(new URL("https://reqres.in/api/users/2"))
                 .asRawValue();
 
@@ -51,7 +51,7 @@ class RestRequestTest {
     @Test
     void testGetRequestAsJavaObjectSync() throws IOException {
 
-        Result result = new RestRequest()
+        final Result result = new RestRequest()
                 .getSync(new URL("https://reqres.in/api/users/2"))
                 .asJavaObject(Result.class)
                 .get();
@@ -62,7 +62,7 @@ class RestRequestTest {
     @Test
     void testGetRequestAsStringSync() throws IOException {
 
-        String string = new RestRequest()
+        final String string = new RestRequest()
                 .getSync(new URL("https://reqres.in/api/users/2"))
                 .asValueString();
 

@@ -1,5 +1,6 @@
 package de.asedem.rest;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -18,17 +19,15 @@ public class RestRequest {
      * @param json the json which should be sendet
      * @throws IOException if something went wrong
      */
-    public void post(URL url, String json) throws IOException {
+    public void post(@NotNull final URL url, @NotNull final String json) throws IOException {
 
-        HttpURLConnection connection;
-
-        connection = (HttpURLConnection) url.openConnection();
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.addRequestProperty("Content-Type", "application/json");
         connection.addRequestProperty("User-Agent", "request");
         connection.setDoOutput(true);
         connection.setRequestMethod(RestRequestMethode.POST.getMethode());
 
-        OutputStream stream = connection.getOutputStream();
+        final OutputStream stream = connection.getOutputStream();
         stream.write(json.getBytes());
         stream.flush();
         stream.close();
@@ -42,7 +41,7 @@ public class RestRequest {
      * @param url the url to send to
      * @return a response from the GET request
      */
-    public CompletableFuture<Response> get(URL url) {
+    public CompletableFuture<Response> get(@NotNull final URL url) {
 
         return this.get(url, 10000, 10000);
     }
@@ -54,9 +53,9 @@ public class RestRequest {
      * @param readTimeout the max read time
      * @return a response from the GET request
      */
-    public CompletableFuture<Response> get(URL url, int connectionTimeout, int readTimeout) {
+    public CompletableFuture<Response> get(@NotNull final URL url, final int connectionTimeout, final int readTimeout) {
 
-        CompletableFuture<Response> completableFuture = new CompletableFuture<>();
+        final CompletableFuture<Response> completableFuture = new CompletableFuture<>();
 
         new Thread(() -> {
 
@@ -76,7 +75,7 @@ public class RestRequest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public Response getSync(URL url) throws IOException {
+    public Response getSync(@NotNull final URL url) throws IOException {
 
         return this.getSync(url, 10000, 10000);
     }
@@ -89,28 +88,25 @@ public class RestRequest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public Response getSync(URL url, int connectionTimeout, int readTimeout) throws IOException {
+    public Response getSync(@NotNull final URL url, final int connectionTimeout, final int readTimeout) throws IOException {
 
-        HttpURLConnection connection;
 
         BufferedReader bufferedReader;
         String line;
         StringBuilder responseContent = new StringBuilder();
 
-        connection = (HttpURLConnection) url.openConnection();
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(RestRequestMethode.GET.getMethode());
         connection.setConnectTimeout(connectionTimeout);
         connection.setReadTimeout(readTimeout);
 
-        int responseCode = connection.getResponseCode();
+        final int responseCode = connection.getResponseCode();
 
         if (responseCode > 299) {
-
             bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
             while ((line = bufferedReader.readLine()) != null) responseContent.append(line);
             bufferedReader.close();
             return new Response(null);
-
         }
 
         bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
