@@ -1,4 +1,4 @@
-<img src="assets/ApiIcon.svg" alt="Made with Java" width="100%">
+<img src="assets/API-Banner.svg" alt="Made with Java" width="100%">
 <br>
 <img src="https://img.shields.io/badge/Made%20with-java-orange?style=for-the-badge&logo=Oracle" alt="Made with Java">
 
