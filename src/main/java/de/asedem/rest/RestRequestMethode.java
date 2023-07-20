@@ -16,6 +16,7 @@ public enum RestRequestMethode {
 
     /**
      * Get the string from the request methode
+     *
      * @return the string from the request methode
      */
     @NotNull

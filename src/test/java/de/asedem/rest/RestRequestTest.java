@@ -1,7 +1,9 @@
 package de.asedem.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import de.asedem.rest.models.*;
+import de.asedem.rest.models.Data;
+import de.asedem.rest.models.Result;
+import de.asedem.rest.models.Support;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

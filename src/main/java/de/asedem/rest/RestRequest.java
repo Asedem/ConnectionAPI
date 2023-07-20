@@ -15,7 +15,8 @@ public class RestRequest {
 
     /**
      * Send a POST request to an url
-     * @param url the url to send to
+     *
+     * @param url  the url to send to
      * @param json the json which should be sendet
      * @throws IOException if something went wrong
      */
@@ -38,6 +39,7 @@ public class RestRequest {
 
     /**
      * Send a GET request to an url async
+     *
      * @param url the url to send to
      * @return a response from the GET request
      */
@@ -48,9 +50,10 @@ public class RestRequest {
 
     /**
      * Send a GET request to an url async
-     * @param url the url to send to
+     *
+     * @param url               the url to send to
      * @param connectionTimeout the max connection time
-     * @param readTimeout the max read time
+     * @param readTimeout       the max read time
      * @return a response from the GET request
      */
     public CompletableFuture<Response> get(@NotNull final URL url, final int connectionTimeout, final int readTimeout) {
@@ -71,6 +74,7 @@ public class RestRequest {
 
     /**
      * Send a GET request to an url sync
+     *
      * @param url the url to send to
      * @return a response from the GET request
      * @throws IOException if something went wrong
@@ -82,9 +86,10 @@ public class RestRequest {
 
     /**
      * Send a GET request to an url sync
-     * @param url the url to send to
+     *
+     * @param url               the url to send to
      * @param connectionTimeout the max connection time
-     * @param readTimeout the max read time
+     * @param readTimeout       the max read time
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
