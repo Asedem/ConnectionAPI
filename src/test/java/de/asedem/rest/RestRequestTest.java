@@ -53,8 +53,7 @@ class RestRequestTest {
     void testGetRequestAsJavaObjectSync() throws IOException {
 
         final Result result = RestRequest.getSync(new URL("https://reqres.in/api/users/2"))
-                .asJavaObject(Result.class)
-                .get();
+                .asJavaObject(Result.class);
 
         assertEquals(expectedResult, result);
     }
@@ -82,7 +81,7 @@ class RestRequestTest {
         RestRequest.get(new URL("https://reqres.in/api/users/2"))
                 .whenComplete((restRequest, throwable) -> {
                     try {
-                        assertEquals(expectedResult, restRequest.asJavaObject(Result.class).get());
+                        assertEquals(expectedResult, restRequest.asJavaObject(Result.class));
                     } catch (JsonProcessingException exception) {
                         exception.printStackTrace();
                     }
