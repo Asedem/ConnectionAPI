@@ -5,8 +5,14 @@ import org.jetbrains.annotations.NotNull;
 public enum HttpMethode {
 
     GET("GET"),
+    PUT("PUT"),
+    HEAD("HEAD"),
     POST("POST"),
-    DELETE("DELETE");
+    TRACE("TRACE"),
+    PATCH("PATCH"),
+    DELETE("DELETE"),
+    CONNECT("CONNECT"),
+    OPTIONS("OPTIONS");
 
     private final String methode;
 
