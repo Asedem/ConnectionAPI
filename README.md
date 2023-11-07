@@ -32,7 +32,7 @@ Rest.request(new URL("<Your URL>"), HttpMethode.<Your Methode>)
         .whenComplete((restRequest, throwable) -> ...);
 ```
 
-#### You can also get the JSON as a predefined Java Object
+#### Get JSON as a predefined Java Object
 
 Java Object example class
 
