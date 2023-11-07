@@ -2,7 +2,7 @@ package de.asedem.rest;
 
 import org.jetbrains.annotations.NotNull;
 
-public enum RestRequestMethode {
+public enum HttpMethode {
 
     GET("GET"),
     POST("POST"),
@@ -10,7 +10,7 @@ public enum RestRequestMethode {
 
     private final String methode;
 
-    RestRequestMethode(@NotNull final String methode) {
+    HttpMethode(@NotNull final String methode) {
         this.methode = methode;
     }
 
@@ -20,7 +20,7 @@ public enum RestRequestMethode {
      * @return the string from the request methode
      */
     @NotNull
-    public String getMethode() {
+    public String get() {
         return methode;
     }
 }

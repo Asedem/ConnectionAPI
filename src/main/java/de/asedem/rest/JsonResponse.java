@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
-public class RestResponse {
+public class JsonResponse {
 
     private final JSONObject value;
     static final ObjectMapper mapper = new ObjectMapper();
 
-    public RestResponse(JSONObject value) {
+    public JsonResponse(JSONObject value) {
         this.value = value;
     }
 
