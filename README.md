@@ -9,6 +9,11 @@ It will get bigger over time, but slowly, because it is just a side project
 
 ## Rest
 
+### Http Methods
+
+The most important Http Methods are Supported:
+`GET`, `PUT`, `HEAD`, `POST`, `TRACE`, `PATCH`, `DELETE`, `CONNECT`, `OPTIONS`
+
 ### General Request
 
 Requesting a sync raw JSON
