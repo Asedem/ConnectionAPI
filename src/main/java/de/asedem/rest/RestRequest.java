@@ -10,8 +10,12 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RestRequest {
+
+    private static final Logger logger = Logger.getLogger(RestRequest.class.getName());
 
     private RestRequest() {
     }
@@ -107,7 +111,7 @@ public class RestRequest {
             try {
                 completableFuture.complete(getSync(url, connectionTimeout, readTimeout));
             } catch (IOException exception) {
-                exception.printStackTrace();
+                logger.log(Level.SEVERE, "Exception in get-Thread", exception);
             }
         });
 
