@@ -9,26 +9,20 @@ It will get bigger over time, but slowly, because it is just a side project
 
 ## Rest
 
-### POST
+### General Request
+
+Requesting a sync raw JSON
 
 ```java
-RestRequest.post(new URL("<Your URL>"), "{<Your JSON>}");
-```
-
-### GET
-
-Getting a sync raw JSON
-
-```java
-final JSONObject jsonObject = RestRequest.getSync(new URL("<Your URL>"))
+final JSONObject jsonObject = Rest.requestSync(new URL("<Your URL>"), HttpMethode.<Your Methode>)
         .asRawValue();
 ...
 ```
 
-Getting an async raw JSON
+Requesting an async raw JSON
 
 ```java
-RestRequest.get(new URL("<Your URL>"))
+Rest.request(new URL("<Your URL>"), HttpMethode.<Your Methode>)
         .whenComplete((restRequest, throwable) -> ...);
 ```
 
@@ -45,19 +39,19 @@ public record Data(
 }
 ```
 
-Getting the JSON as the Data object sync
+Requesting the JSON as the Data object sync
 
 ```java
-final Data data = RestRequest.getSync(new URL("<Your URL>"))
+final Data data = Rest.requestSync(new URL("<Your URL>"), HttpMethode.<Your Methode>)
         .asJavaObject(Data.class)
         .get();
 ...
 ```
 
-Getting the JSON as the Data object async
+Requesting the JSON as the Data object async
 
 ```java
-RestRequest.get(new URL("<Your URL>"))
+Rest.request(new URL("<Your URL>"), HttpMethode.<Your Methode>)
         .whenComplete((restRequest, throwable) -> {
             try {
                 final Data data = restRequest.asJavaObject(Data.class).get();
