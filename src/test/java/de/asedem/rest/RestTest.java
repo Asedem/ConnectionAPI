@@ -9,7 +9,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,6 +20,7 @@ class RestTest {
 
     private static Result expectedResult;
     private static String expectedString;
+    private static final Logger logger = Logger.getLogger(RestTest.class.getName());
 
     @BeforeAll
     static void setup() {
@@ -37,14 +40,14 @@ class RestTest {
                 expectedData,
                 expectedSupport);
 
-        expectedString = "{\"data\":{\"last_name\":\"Weaver\",\"id\":2,\"avatar\":\"https://reqres.in/img/faces/2-image.jpg\",\"first_name\":\"Janet\",\"email\":\"janet.weaver@reqres.in\"},\"support\":{\"text\":\"To keep ReqRes free, contributions towards server costs are appreciated!\",\"url\":\"https://reqres.in/#support-heading\"}}";
+        expectedString = "{\"data\":{\"id\":2,\"email\":\"janet.weaver@reqres.in\",\"first_name\":\"Janet\",\"last_name\":\"Weaver\",\"avatar\":\"https://reqres.in/img/faces/2-image.jpg\"},\"support\":{\"url\":\"https://reqres.in/#support-heading\",\"text\":\"To keep ReqRes free, contributions towards server costs are appreciated!\"}}";
     }
 
     @Test
     void testGetRequestGetsFeedbackSync() throws IOException {
 
-        final JSONObject jsonObject = Rest.requestSync(new URL("https://reqres.in/api/users/2"), HttpMethode.GET)
-                .asRawValue();
+        final JSONObject jsonObject = Rest.requestSync(URI.create("https://reqres.in/api/users/2").toURL(), HttpMethode.GET)
+                .asJSONObject();
 
         assertNotNull(jsonObject);
     }
@@ -52,7 +55,7 @@ class RestTest {
     @Test
     void testGetRequestAsJavaObjectSync() throws IOException {
 
-        final Result result = Rest.requestSync(new URL("https://reqres.in/api/users/2"), HttpMethode.GET)
+        final Result result = Rest.requestSync(URI.create("https://reqres.in/api/users/2").toURL(), HttpMethode.GET)
                 .asJavaObject(Result.class);
 
         assertEquals(expectedResult, result);
@@ -61,7 +64,7 @@ class RestTest {
     @Test
     void testGetRequestAsStringSync() throws IOException {
 
-        final String string = Rest.requestSync(new URL("https://reqres.in/api/users/2"), HttpMethode.GET)
+        final String string = Rest.requestSync(URI.create("https://reqres.in/api/users/2").toURL(), HttpMethode.GET)
                 .asValueString();
 
         assertEquals(expectedString, string);
@@ -70,20 +73,20 @@ class RestTest {
     @Test
     void testGetRequestGetsFeedbackAsync() throws IOException {
 
-        Rest.request(new URL("https://reqres.in/api/users/2"), HttpMethode.GET)
+        Rest.request(URI.create("https://reqres.in/api/users/2").toURL(), HttpMethode.GET)
                 .whenComplete((restRequest, throwable) ->
-                        assertNotNull(restRequest.asRawValue()));
+                        assertNotNull(restRequest.asJSONObject()));
     }
 
     @Test
     void testGetRequestAsJavaObjectAsync() throws IOException {
 
-        Rest.request(new URL("https://reqres.in/api/users/2"), HttpMethode.GET)
+        Rest.request(URI.create("https://reqres.in/api/users/2").toURL(), HttpMethode.GET)
                 .whenComplete((restRequest, throwable) -> {
                     try {
                         assertEquals(expectedResult, restRequest.asJavaObject(Result.class));
                     } catch (JsonProcessingException exception) {
-                        exception.printStackTrace();
+                        logger.log(Level.SEVERE, "There was an Exception while getting user Data", exception);
                     }
                 });
     }
@@ -91,7 +94,7 @@ class RestTest {
     @Test
     void testGetRequestAsStringAsync() throws IOException {
 
-        Rest.request(new URL("https://reqres.in/api/users/2"), HttpMethode.GET)
+        Rest.request(URI.create("https://reqres.in/api/users/2").toURL(), HttpMethode.GET)
                 .whenComplete((restRequest, throwable) -> {
                     assertEquals(expectedString, restRequest.asValueString());
                 });

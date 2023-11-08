@@ -2,7 +2,6 @@ package de.asedem.rest;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +27,8 @@ public class Rest {
      * @param httpMethode the http method to use
      * @return a response from the GET request
      */
-    public static CompletableFuture<JsonResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode) {
+    @NotNull
+    public static CompletableFuture<RestResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode) {
 
         return Rest.request(url, httpMethode, 10000, 10000);
     }
@@ -42,7 +42,8 @@ public class Rest {
      * @param readTimeout       the max read time
      * @return a response from the GET request
      */
-    public static CompletableFuture<JsonResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, final int connectionTimeout, final int readTimeout) {
+    @NotNull
+    public static CompletableFuture<RestResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, final int connectionTimeout, final int readTimeout) {
 
         return Rest.request(url, httpMethode, null, readTimeout, connectionTimeout);
     }
@@ -55,7 +56,8 @@ public class Rest {
      * @param jsonObject  the json which should be sent
      * @return a response from the GET request
      */
-    public static <T> CompletableFuture<JsonResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, @Nullable final T jsonObject) {
+    @NotNull
+    public static <T> CompletableFuture<RestResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, @Nullable final T jsonObject) {
 
         return Rest.request(url, httpMethode, jsonObject, 10000, 10000);
     }
@@ -70,9 +72,10 @@ public class Rest {
      * @param readTimeout       the max read time
      * @return a response from the GET request
      */
-    public static <T> CompletableFuture<JsonResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, @Nullable final T jsonObject, final int connectionTimeout, final int readTimeout) {
+    @NotNull
+    public static <T> CompletableFuture<RestResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, @Nullable final T jsonObject, final int connectionTimeout, final int readTimeout) {
 
-        final CompletableFuture<JsonResponse> completableFuture = new CompletableFuture<>();
+        final CompletableFuture<RestResponse> completableFuture = new CompletableFuture<>();
 
         new Thread(() -> {
 
@@ -94,7 +97,8 @@ public class Rest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public static JsonResponse requestSync(@NotNull final URL url, @NotNull final HttpMethode httpMethode) throws IOException {
+    @NotNull
+    public static RestResponse requestSync(@NotNull final URL url, @NotNull final HttpMethode httpMethode) throws IOException {
 
         return Rest.requestSync(url, httpMethode, 10000, 10000);
     }
@@ -107,7 +111,8 @@ public class Rest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public static JsonResponse requestSync(@NotNull final URL url, @NotNull final HttpMethode httpMethode, final int connectionTimeout, final int readTimeout) throws IOException {
+    @NotNull
+    public static RestResponse requestSync(@NotNull final URL url, @NotNull final HttpMethode httpMethode, final int connectionTimeout, final int readTimeout) throws IOException {
 
         return Rest.requestSync(url, httpMethode, null, connectionTimeout, readTimeout);
     }
@@ -121,7 +126,8 @@ public class Rest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public static <T> JsonResponse requestSync(@NotNull final URL url, @NotNull final HttpMethode httpMethode, @Nullable final T jsonObject) throws IOException {
+    @NotNull
+    public static <T> RestResponse requestSync(@NotNull final URL url, @NotNull final HttpMethode httpMethode, @Nullable final T jsonObject) throws IOException {
 
         return Rest.requestSync(url, httpMethode, jsonObject, 10000, 10000);
     }
@@ -137,7 +143,8 @@ public class Rest {
      * @return a response from the GET request
      * @throws IOException if something went wrong
      */
-    public static <T> JsonResponse requestSync(@NotNull final URL url, @NotNull HttpMethode httpMethode, @Nullable final T jsonObject, final int connectionTimeout, final int readTimeout) throws IOException {
+    @NotNull
+    public static <T> RestResponse requestSync(@NotNull final URL url, @NotNull HttpMethode httpMethode, @Nullable final T jsonObject, final int connectionTimeout, final int readTimeout) throws IOException {
 
         final BufferedReader bufferedReader;
         final StringBuilder responseContent = new StringBuilder();
@@ -156,7 +163,7 @@ public class Rest {
 
         if (jsonObject != null) {
             final OutputStream stream = connection.getOutputStream();
-            final String json = JsonResponse.mapper.writeValueAsString(jsonObject);
+            final String json = RestResponse.mapper.writeValueAsString(jsonObject);
             stream.write(json.getBytes());
             stream.flush();
             stream.close();
@@ -168,7 +175,7 @@ public class Rest {
             bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
             while ((line = bufferedReader.readLine()) != null) responseContent.append(line);
             bufferedReader.close();
-            return new JsonResponse(null);
+            return new RestResponse(responseCode, null);
         }
 
         bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -178,6 +185,6 @@ public class Rest {
 
         connection.disconnect();
 
-        return new JsonResponse(new JSONObject(responseContent.toString()));
+        return new RestResponse(responseCode, responseContent.toString());
     }
 }

@@ -2,15 +2,27 @@ package de.asedem.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
-public class JsonResponse {
+public class RestResponse {
 
-    private final JSONObject value;
+    private final int statusCode;
+    private final String value;
     static final ObjectMapper mapper = new ObjectMapper();
 
-    public JsonResponse(JSONObject value) {
+    public RestResponse(int statusCode, @Nullable String value) {
+        this.statusCode = statusCode;
         this.value = value;
+    }
+
+    /**
+     * Gets the statusCode of the response
+     *
+     * @return the statusCode
+     */
+    public int getStatusCode() {
+        return this.statusCode;
     }
 
     /**
@@ -18,8 +30,8 @@ public class JsonResponse {
      *
      * @return the JSON value the is saved in the response
      */
-    public JSONObject asRawValue() {
-        return value;
+    public JSONObject asJSONObject() {
+        return this.value == null ? null : new JSONObject(this.value);
     }
 
     /**
@@ -28,7 +40,7 @@ public class JsonResponse {
      * @return the JSON value the is saved in the response as a String
      */
     public String asValueString() {
-        return this.value.toString();
+        return this.value;
     }
 
     /**
@@ -41,6 +53,6 @@ public class JsonResponse {
      */
     public <T> T asJavaObject(Class<T> targetClass) throws JsonProcessingException {
 
-        return mapper.readValue(this.value.toString(), targetClass);
+        return this.value == null ? null : mapper.readValue(this.value, targetClass);
     }
 }
