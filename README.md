@@ -7,6 +7,49 @@ ConnectionAPI is a library, where you can perform rest request or do a socket co
 
 It will get bigger over time, but slowly, because it is just a side project
 
+## Installation
+
+### Maven
+
+#### Repository
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+#### Dependency
+
+```xml
+<dependency>
+    <groupId>com.github.Asedem</groupId>
+    <artifactId>ConnectionAPI</artifactId>
+    <version>5ffcfef027</version>
+</dependency>
+```
+
+### Gradle
+
+#### Repository
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+#### Dependency
+
+```groovy
+dependencies {
+    implementation 'com.github.Asedem:ConnectionAPI:5ffcfef027'
+}
+```
+
 ## Rest
 
 ### Http Methods
