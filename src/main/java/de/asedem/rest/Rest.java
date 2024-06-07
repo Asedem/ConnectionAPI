@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.http.HttpRequest;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +46,7 @@ public class Rest {
     @NotNull
     public static CompletableFuture<RestResponse> request(@NotNull final URL url, @NotNull final HttpMethode httpMethode, final int connectionTimeout, final int readTimeout) {
 
-        return Rest.request(url, httpMethode, null, readTimeout, connectionTimeout);
+        return Rest.request(url, httpMethode, null, connectionTimeout, readTimeout);
     }
 
     /**
